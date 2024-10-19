@@ -3,7 +3,7 @@ SELECT customerName,city from customers
 where city='Paris';
 
 --List product names and their buy prices.
-SELECT productName,buyPrice FROM classicmodels.products;
+SELECT productName,buyPrice FROM products;
 
 --List employees who work in 'San Francisco' office.
 SELECT firstName, lastName FROM employees WHERE officeCode = (SELECT officeCode FROM offices WHERE city = 'San Francisco');
