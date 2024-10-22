@@ -18,3 +18,26 @@ FROM orders as o
 JOIN orderdetails as od ON o.orderNumber=od.orderNumber
 GROUP BY customerNumber
 HAVING products > 50;
+
+--Identify customers who ordered products worth more than $10,000.
+SELECT customerNumber, SUM(quantityOrdered * priceEach) AS total
+FROM orders
+JOIN orderdetails ON orders.orderNumber=orderdetails.orderNumber
+GROUP BY customerNumber
+HAVING totalValue > 10000;
+
+--Retrieve the top 5 most expensive products sold.
+SELECT productCode, priceEach
+FROM orderdetails
+ORDER BY priceEach DESC
+LIMIT 5;
+
+--Find products not ordered by any customer.
+SELECT productCode, productName
+FROM products
+WHERE productCode NOT IN (SELECT DISTINCT productCode FROM orderdetails);
+--Same query using join
+SELECT p.productCode, p.productName
+FROM products p
+LEFT JOIN orderdetails od ON p.productCode = od.productCode
+WHERE od.productCode IS NULL;
