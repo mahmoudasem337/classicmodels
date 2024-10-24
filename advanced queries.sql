@@ -41,3 +41,30 @@ SELECT p.productCode, p.productName
 FROM products p
 LEFT JOIN orderdetails od ON p.productCode = od.productCode
 WHERE od.productCode IS NULL;
+
+--List products sold in the highest quantities.
+SELECT productCode, SUM(quantityOrdered) AS totalQuantity
+FROM orderdetails
+GROUP BY productCode
+ORDER BY totalQuantity DESC;
+
+--List employees who work in offices outside of the USA.
+SELECT employeeNumber, firstName, lastName, o.city, o.country
+FROM employees
+JOIN offices o ON employees.officeCode = o.officeCode
+WHERE o.country not in
+(SELECT o.country
+FROM offices o
+WHERE o.country = 'USA'
+);
+--same query in simple way
+SELECT employeeNumber, firstName, lastName, o.city, o.country
+FROM employees
+JOIN offices o ON employees.officeCode = o.officeCode
+WHERE o.country != 'USA';
+
+--List orders that include products from multiple product lines.
+SELECT orderNumber , COUNT(DISTINCT productLine) as total
+FROM orderdetails join products on orderdetails.productCode=products.productCode
+group by orderNumber
+having total>1
